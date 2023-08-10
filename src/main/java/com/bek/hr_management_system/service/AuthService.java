@@ -7,6 +7,8 @@ import com.bek.hr_management_system.payload.RegisterDto;
 import com.bek.hr_management_system.repository.RoleRepository;
 import com.bek.hr_management_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class AuthService {
     PasswordEncoder passwordEncoder;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    JavaMailSender javaMailSender;
 
     public ApiResponse registerUser(RegisterDto registerDto){
         boolean existsByEmail = userRepository.existsByEmail(registerDto.getEmail());
@@ -37,6 +41,26 @@ public class AuthService {
         user.setEmailCode(UUID.randomUUID().toString());
 
         userRepository.save(user);
-        return new ApiResponse("Registered", true);
+        //EMAIL SENDING
+        sendEmail(user.getEmail(), user.getEmailCode());
+
+        return new ApiResponse("Successfully registered", true);
+    }
+
+    public Boolean sendEmail(String sendingEmail, String emailCode){
+
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("example@gmail.com");
+            message.setTo(sendingEmail);
+            message.setSubject("Akkountni tasdiqlash");
+            message.setText("<a href='https://bek.com/api/auth/verifyEmail?emailCode=" + emailCode + "&email=" + sendingEmail + "'>Tasdiqlash</a>");
+            javaMailSender.send(message);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+
     }
 }
