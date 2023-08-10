@@ -6,10 +6,7 @@ import com.bek.hr_management_system.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,5 +19,12 @@ public class AuthController {
     public HttpEntity<?> registerUser(@RequestBody RegisterDto registerDto){
         ApiResponse apiResponse = authService.registerUser(registerDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? 201:409).body(apiResponse);
+    }
+
+
+    @GetMapping("/verifyEmail")
+    public HttpEntity<?> verifyEmail(@RequestParam String emailCode, @RequestParam String email){
+        ApiResponse apiResponse = authService.verifyEmail(emailCode, email);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 200:409).body(apiResponse);
     }
 }

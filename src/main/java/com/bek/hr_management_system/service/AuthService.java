@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,6 +48,18 @@ public class AuthService {
         return new ApiResponse("Successfully registered", true);
     }
 
+    public ApiResponse verifyEmail(String emailCode, String email){
+        Optional<User> optionalUser = userRepository.findByEmailAndEmailCode(email, emailCode);
+        if (optionalUser.isEmpty())
+            return new ApiResponse("Account already accepted", false);
+
+        User user = optionalUser.get();
+        user.setEnabled(true);
+        user.setEmailCode(null);
+        userRepository.save(user);
+        return new ApiResponse("Account accepted", true);
+    }
+
     public Boolean sendEmail(String sendingEmail, String emailCode){
 
         try {
@@ -61,6 +74,5 @@ public class AuthService {
         catch (Exception e){
             return false;
         }
-
     }
 }
