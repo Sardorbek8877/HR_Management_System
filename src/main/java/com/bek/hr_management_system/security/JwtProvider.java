@@ -23,4 +23,20 @@ public class JwtProvider {
                 .signWith(SignatureAlgorithm.ES512, secret)
                 .compact();
     }
+
+    public String getEmailFromToken(String token){
+        try {
+            String email = Jwts
+                    .parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+            return email;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
 }
