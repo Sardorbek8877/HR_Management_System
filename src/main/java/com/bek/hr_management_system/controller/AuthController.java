@@ -1,6 +1,7 @@
 package com.bek.hr_management_system.controller;
 
 import com.bek.hr_management_system.payload.ApiResponse;
+import com.bek.hr_management_system.payload.LoginDto;
 import com.bek.hr_management_system.payload.RegisterDto;
 import com.bek.hr_management_system.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,11 @@ public class AuthController {
     public HttpEntity<?> verifyEmail(@RequestParam String emailCode, @RequestParam String email){
         ApiResponse apiResponse = authService.verifyEmail(emailCode, email);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200:409).body(apiResponse);
+    }
+
+    @PostMapping("/login")
+    public HttpEntity<?> login(@RequestBody LoginDto loginDto){
+        ApiResponse apiResponse = authService.login(loginDto);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 200:401).body(apiResponse);
     }
 }

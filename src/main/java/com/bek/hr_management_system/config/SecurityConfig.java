@@ -3,11 +3,15 @@ package com.bek.hr_management_system.config;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,13 +25,21 @@ import java.util.Properties;
 public class SecurityConfig {
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer :: disable)
-                .authorizeHttpRequests((requests) -> {requests
-                        .requestMatchers("/api/auth/register", "/api/auth/verifyEmail")
-                        .permitAll()
-                        .anyRequest().authenticated();
-        }).httpBasic(Customizer.withDefaults());
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/api/**").hasAuthority("DIRECTOR")
+                        .requestMatchers("/api/employee/**").hasAuthority("HR_MANAGER")
+                        .requestMatchers(HttpMethod.GET,"/api/salary/**").hasAnyAuthority("DIRECTOR", "HR_MANAGER")
+                        .requestMatchers(HttpMethod.GET,"/api/salary/*").hasAuthority("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET,"/api/task").hasAuthority("EMPLOYEE")
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
 
