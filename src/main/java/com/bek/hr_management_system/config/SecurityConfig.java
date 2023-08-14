@@ -36,11 +36,13 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer :: disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/**").hasAuthority("DIRECTOR")
+                        .requestMatchers("/api/register").hasAnyAuthority("DIRECTOR", "HR_MANAGER")
                         .requestMatchers("/api/employee/**").hasAuthority("HR_MANAGER")
                         .requestMatchers(HttpMethod.GET,"/api/salary/**").hasAnyAuthority("DIRECTOR", "HR_MANAGER")
                         .requestMatchers(HttpMethod.GET,"/api/salary/*").hasAuthority("EMPLOYEE")

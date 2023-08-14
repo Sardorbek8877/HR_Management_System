@@ -2,6 +2,7 @@ package com.bek.hr_management_system.service;
 
 import com.bek.hr_management_system.entity.User;
 import com.bek.hr_management_system.entity.enums.RoleName;
+import com.bek.hr_management_system.payload.AddUserDto;
 import com.bek.hr_management_system.payload.ApiResponse;
 import com.bek.hr_management_system.payload.LoginDto;
 import com.bek.hr_management_system.payload.RegisterDto;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -50,7 +52,7 @@ public class AuthService implements UserDetailsService {
         user.setLastName(registerDto.getLastName());
         user.setEmail(registerDto.getEmail());
         user.setPassword(registerDto.getPassword());
-        user.setRoles(roleRepository.findAllByName(RoleName.ROLE_DIRECTOR));
+        user.setRoles(roleRepository.findAllByName(RoleName.DIRECTOR));
 
         user.setEmailCode(UUID.randomUUID().toString());
 
@@ -79,8 +81,8 @@ public class AuthService implements UserDetailsService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("example@gmail.com");
             message.setTo(sendingEmail);
-            message.setSubject("Akkountni tasdiqlash");
-            message.setText("<a href='https://bek.com/api/auth/verifyEmail?emailCode=" + emailCode + "&email=" + sendingEmail + "'>Tasdiqlash</a>");
+            message.setSubject("Confirm Account");
+            message.setText("<a href='https://bek.com/api/auth/verifyEmail?emailCode=" + emailCode + "&email=" + sendingEmail + "'>Confirm</a>");
             javaMailSender.send(message);
             return true;
         }
@@ -101,6 +103,10 @@ public class AuthService implements UserDetailsService {
         catch (BadCredentialsException badCredentialsException){
             return new ApiResponse("Password or email incorrect", false);
         }
+    }
+
+    public ApiResponse addUser(AddUserDto addUserDto){
+        return null;
     }
 
     @Override

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -15,10 +18,16 @@ public class Salary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String month;
+    private Double monthlyAmount;
 
-    private double amount;
+    private Integer monthNumber;
 
-    @ManyToOne
-    private Employee employee;
+    private boolean isPaid;
+
+    @Column(nullable = false,updatable = false)
+    @CreationTimestamp
+    private Timestamp paidTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }

@@ -1,13 +1,20 @@
 package com.bek.hr_management_system.controller;
 
+import com.bek.hr_management_system.payload.AddUserDto;
 import com.bek.hr_management_system.payload.ApiResponse;
 import com.bek.hr_management_system.payload.LoginDto;
 import com.bek.hr_management_system.payload.RegisterDto;
 import com.bek.hr_management_system.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,5 +40,23 @@ public class AuthController {
     public HttpEntity<?> login(@RequestBody LoginDto loginDto){
         ApiResponse apiResponse = authService.login(loginDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200:401).body(apiResponse);
+    }
+
+    @PostMapping("/addUser")
+    public HttpEntity<?> addUser(@RequestBody AddUserDto addUserDto){
+        ApiResponse addManager = authService.addUser(addUserDto);
+        return ResponseEntity.status(addManager.isSuccess() ? 201 :409).body(addManager);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidException(MethodArgumentNotValidException ex) {
+        Map<String, String> mistakes = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            mistakes.put(fieldName, errorMessage);
+        });
+        return mistakes;
     }
 }

@@ -61,7 +61,7 @@ public class User implements UserDetails {
     //Methods From UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return (Collection<? extends GrantedAuthority>) this.roles;
     }
 
     @Override
