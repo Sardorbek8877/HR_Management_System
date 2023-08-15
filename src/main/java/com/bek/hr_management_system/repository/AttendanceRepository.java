@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, UUID> {
 
+    boolean existsByUserId(UUID userId);
 }

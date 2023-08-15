@@ -52,7 +52,7 @@ public class EmployeeService {
         User user = (User) authentication.getPrincipal();
         Set<Role> roles = user.getRoles();
         for (Role role : roles){
-            if (role.getName().name().equals("MANAGER") || role.getName().name().equals("WORKER")){
+            if (role.getName().name().equals("MANAGER") || role.getName().name().equals("EMPLOYEE")){
                 return new ApiResponse("Director and HR_Manager can get Attendance List", false);
             }
         }
@@ -73,7 +73,7 @@ public class EmployeeService {
         User user = (User) authentication.getPrincipal();
         Set<Role> roles = user.getRoles();
         for (Role role : roles){
-            if (role.getName().name().equals("MANAGER") || role.getName().name().equals("WORKER")){
+            if (role.getName().name().equals("MANAGER") || role.getName().name().equals("EMPLOYEE")){
                 return new ApiResponse("Only Director and HR_Manager can get List", false);
             }
         }
