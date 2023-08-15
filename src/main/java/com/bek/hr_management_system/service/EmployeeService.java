@@ -66,4 +66,23 @@ public class EmployeeService {
         }
         return new ApiResponse("Attendance History List: ", true, attendanceHistoryList);
     }
+
+    //GET ATTENDANCE LIST BY EMPLOYEE
+    public ApiResponse getAllAttendanceByEmployee(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles){
+            if (role.getName().name().equals("MANAGER") || role.getName().name().equals("WORKER")){
+                return new ApiResponse("Only Director and HR_Manager can get List", false);
+            }
+        }
+        List<AttendanceHistory> attendanceHistoryList = attendanceHistoryRepository.findAll();
+        if (attendanceHistoryList.isEmpty()){
+            return new ApiResponse("User Attendance not found", false);
+        }
+        return new ApiResponse("Attendance List: ", true, attendanceHistoryList);
+    }
+
+
 }
