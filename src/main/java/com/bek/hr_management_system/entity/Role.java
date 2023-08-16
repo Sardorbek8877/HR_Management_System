@@ -18,10 +18,10 @@ public class Role implements GrantedAuthority {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private RoleName name;
+    private RoleName roleName;
 
     @Override
     public String getAuthority() {
-        return name.name();
+        return roleName.name();
     }
 }

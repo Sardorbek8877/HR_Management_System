@@ -1,17 +1,39 @@
 package com.bek.hr_management_system.controller;
 
 
+import com.bek.hr_management_system.payload.ApiResponse;
+import com.bek.hr_management_system.payload.TaskDto;
 import com.bek.hr_management_system.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api")
 public class TaskController {
 
     @Autowired
     TaskService taskService;
 
+    // DIRECTOR OR MANAGER SEND THE TASK
+    @PostMapping("/attachTask")
+    public HttpEntity<?> attachTask(@RequestBody TaskDto taskDto){
+        ApiResponse apiResponse = taskService.attachTask(taskDto);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 201 : 409).body(apiResponse);
+    }
 
+    //EMPLOYEE DOING THE TASK
+    @GetMapping("/doTheTask/{taskId}")
+    public HttpEntity<?> doTheTask(@RequestParam String email, @RequestParam Integer taskId){
+        ApiResponse apiResponse = taskService.doTheTask(taskId, email);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 200:409).body(apiResponse);
+    }
+
+    //COMPLETING TASK
+    @PostMapping("/completeTheTask/{id}")
+    public HttpEntity<?> completeTask(@RequestParam Integer id){
+        ApiResponse apiResponse = taskService.taskCompleted(id);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 200:409).body(apiResponse);
+    }
 }
