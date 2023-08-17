@@ -1,4 +1,4 @@
-HR Management System mit Spring Boot und Spring Security
+HR Management System mit Spring Boot und Spring Securityffff
 Willkommen bei HR Management System, einem fortschrittlichen Projekt zur Verwaltung von Mitarbeiteranwesenheit, Rollen, Gehältern, Benutzern und Aufgaben. Diese Anwendung wurde mithilfe von Spring Boot und Spring Security entwickelt und bietet eine benutzerfreundliche Möglichkeit zur Verwaltung wichtiger HR-Aufgaben.
 
 Funktionen
