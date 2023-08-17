@@ -1,37 +1,54 @@
-HR Management System mit Spring Boot und Spring Security
+#HR Management System with Spring Boot and Spring Security
 
-Willkommen bei HR Management System, einem fortschrittlichen Projekt zur Verwaltung von Mitarbeiteranwesenheit, Rollen, Gehältern, Benutzern und Aufgaben. Diese Anwendung wurde mithilfe von Spring Boot und Spring Security entwickelt und bietet eine benutzerfreundliche Möglichkeit zur Verwaltung wichtiger HR-Aufgaben.
+Welcome to the **HR Management System** repository, showcasing a comprehensive solution for efficient HR management built using Spring Boot, PostgreSQL, and Spring Security.
 
-Funktionen
-Anwesenheitsverfolgung: Die Anwendung ermöglicht es Ihnen, die Anwesenheit Ihrer Mitarbeiter zu verfolgen und zu verwalten. Sie können Einträge für jeden Arbeitstag erstellen, bearbeiten und anzeigen.
+##About the System
+The HR Management System is a sophisticated service platform tailored for HR management tasks. It offers a secure and accessible environment through username and password authentication.
 
-Anwesenheitsverlauf: Verfolgen Sie den Anwesenheitsverlauf eines Mitarbeiters im Laufe der Zeit. Dies kann bei der Leistungsbeurteilung und der Planung hilfreich sein.
+##Features
+###Company Hierarchy
+**Director:** The company is led by a single director responsible for overseeing all operations.
 
-Rollenverwaltung: Definieren Sie verschiedene Rollen in der Organisation, wie z.B. Administrator, Manager und Mitarbeiter. Steuern Sie den Zugriff auf bestimmte Funktionen basierend auf den Rollen der Benutzer.
+**Managers:** Directors have the authority to add managers to the system. When adding managers, a unique link is sent to their email addresses for account activation.
 
-Gehaltsverwaltung: Verwalten Sie die Gehälter der Mitarbeiter, verfolgen Sie Erhöhungen und anzeigen Sie Gehaltsabrechnungen.
+**HR Manager:** Within the department hierarchy, the HR Manager position holds a special significance.
 
-Benutzerverwaltung: Erstellen Sie Benutzerkonten für Mitarbeiter und Administratoren. Verwalten Sie Anmeldeinformationen und Zugriffsrechte.
+##Employee Management
+**Employees:** Managers, especially HR Managers, can add employees to the system. Similar to managers, employees receive an email link for account activation upon registration.
 
-Aufgabenverwaltung: Weisen Sie Aufgaben an Mitarbeiter zu, verfolgen Sie den Fortschritt und markieren Sie abgeschlossene Aufgaben.
+**Authentication:** Employees are assigned unique passwords through email links for secure access.
 
-Installation
-Voraussetzungen: Stellen Sie sicher, dass Sie Java und Maven auf Ihrem System installiert haben.
+**Unique Email:** Employee email addresses serve as non-repeatable usernames.
 
-Datenbank: Konfigurieren Sie Ihre Datenbankverbindung in der application.properties-Datei.
+**Tourniquet:** Employees are provided with a tourniquet to track their entrances and exits.
 
-Build und Ausführung: Führen Sie den Befehl mvn spring-boot:run im Hauptverzeichnis des Projekts aus, um die Anwendung zu kompilieren und auszuführen.
+##Task Management
+**Task States:** Tasks are categorized into three states: new, in progress, and completed.
 
-Zugriff: Öffnen Sie Ihren Webbrowser und navigieren Sie zu http://localhost:8080, um auf die Anwendung zuzugreifen.
+**Assignment:** The director assigns tasks to managers and employees. Managers are responsible for employees, while directors oversee the entire process.
 
-Beitrag
-Wir freuen uns über Beiträge zur Weiterentwicklung dieses Projekts. Wenn Sie Fehler finden, neue Funktionen hinzufügen oder Verbesserungen vorschlagen möchten, öffnen Sie bitte ein Issue oder eine Pull-Anfrage in diesem Repository.
+**Details:** Each task includes a name, description, estimated completion time, and assigned employee.
 
-Lizenz
-Dieses Projekt ist unter der MIT-Lizenz lizenziert. Sie können den Code frei verwenden, modifizieren und verteilen.
+**Notifications:** Employees receive email notifications upon task assignment and completion.
 
-Autoren
-Ihr Name
-Kontakt
-Bei Fragen, Anregungen oder Feedback können Sie uns unter Ihre E-Mail-Adresse erreichen.
- 
+**Task Completion:** After completing a task, employees mark it as completed, triggering an email notification to the assigning manager or director.
+
+##Attendance Tracking
+**Attendance:** A attendance is integrated to monitor employee work hours, recording entry and exit times.
+Leadership Insights
+**Visibility:** Managers in the positions of director and HR Manager can access a list of employees.
+
+**Employee Information:** Managers can view comprehensive information about employees, including attendance within specified intervals and task performance.
+
+**Salary Management:** Monthly salaries are determined for each employee, and salary issuance is recorded in the system. Managers can review issued salaries by employee or specific month.
+
+**Task Performance:** Managers can assess the timely completion of tasks assigned to employees and identify any potential delays.
+
+##Installation and Usage
+**Prerequisites:** Ensure you have Java, Maven, PostgreSQL, and Spring Boot set up on your system.
+
+**Database Configuration:** Configure your PostgreSQL database connection details in the application.properties file.
+
+**Build and Run:** Execute mvn spring-boot:run in the project's root directory to compile and run the application.
+
+**Access:** Open your web browser and navigate to http://localhost:8080 to access the HR Management System.
